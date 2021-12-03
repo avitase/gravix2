@@ -1,0 +1,6 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define TRAJECTORY_SIZE @TRAJECTORY_SIZE@
+
+#endif // CONFIG_H
