@@ -12,6 +12,8 @@ struct Planets *new_world(size_t n);
 
 void delete_world(struct Planets *);
 
-size_t delete_planet(struct Planets *, size_t i);
+int set_planet(struct Planets *, size_t i, double lat, double lon);
+
+size_t pop_planet(struct Planets *);
 
 #endif // WORLD_H
