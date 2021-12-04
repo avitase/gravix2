@@ -1,8 +1,4 @@
-import ctypes
 from ctypes import c_double, c_int, c_size_t, c_void_p
-from pathlib import Path
-
-import numpy as np
 
 
 class World:
@@ -44,20 +40,3 @@ class World:
 
     def __del__(self):
         self._delete_world(self._handle)
-
-
-if __name__ == '__main__':
-    lib = str(Path('libphysics.so').resolve())
-    lib = ctypes.cdll.LoadLibrary(lib)
-
-    world = World(planets=[(1., 2.), (3., 4.), (5., 6.)], lib=lib)
-    assert np.all(np.array(world.planet_id) == np.array([0, 1, 2]))
-
-    world.remove_planet(1)
-    assert np.all(np.array(world.planet_id) == np.array([0, 2]))
-
-    world.remove_planet(1)
-    assert np.all(np.array(world.planet_id) == np.array([0, ]))
-
-    world.remove_planet(0)
-    assert len(world.planet_id) == 0

@@ -1,6 +1,5 @@
 import ctypes
 from ctypes import c_double, c_size_t, c_void_p
-from pathlib import Path
 
 import numpy as np
 
@@ -59,32 +58,10 @@ class Missiles:
         self._delete_missiles = delete_missiles
 
     def __len__(self):
-        return len(missiles)
+        return len(self._missiles)
 
     def __getitem__(self, i):
         return self._missiles[i]
 
     def __del__(self):
         self._delete_missiles(self._handle)
-
-
-if __name__ == '__main__':
-    lib = str(Path('libphysics.so').resolve())
-    lib = ctypes.cdll.LoadLibrary(lib)
-    missiles = Missiles(n=3, lib=lib)
-
-    m = missiles[0]
-    m.launch(lat=0., lon=0., psi=0.)
-
-    trj = m.trajectory
-    print('x')
-    print(trj['x'])
-    print('v')
-    print(trj['v'])
-    print('*' * 80)
-
-    m.propagate()
-    print('x')
-    print(trj['x'])
-    print('v')
-    print(trj['v'])
