@@ -7,7 +7,7 @@ import numpy as np
 
 class Missile:
     def __init__(self, *, missile, lib):
-        self.missile = missile
+        self._missile = missile
         self.trajectory = None
 
         launch = lib.launch_missile
@@ -21,7 +21,7 @@ class Missile:
         self._propagate = propagate
 
     def propagate(self):
-        n = self._propagate(None, self.missile)
+        n = self._propagate(None, self._missile)
 
         class Trajectory(ctypes.Structure):
             _fields_ = [
@@ -29,47 +29,48 @@ class Missile:
                 ('v', c_double * (n * 3)),
             ]
 
-        raw = ctypes.cast(self.missile, ctypes.POINTER(Trajectory))
+        raw = ctypes.cast(self._missile, ctypes.POINTER(Trajectory))
         self.trajectory = {
             'x': np.ctypeslib.as_array(raw.contents.x).reshape(n, 3),
             'v': np.ctypeslib.as_array(raw.contents.v).reshape(n, 3),
         }
 
     def launch(self, *, lat, lon, psi):
-        self._launch(self.missile, lat, lon, psi)
+        self._launch(self._missile, lat, lon, psi)
         self.propagate()
 
 
 class Missiles:
     def __init__(self, *, n, lib):
-        self.lib = lib
-
-        new_missiles = self.lib.new_missiles
+        new_missiles = lib.new_missiles
         new_missiles.argtypes = [c_size_t, ]
         new_missiles.restype = c_void_p
-        self.handle = new_missiles(n)
+        self._handle = new_missiles(n)
 
-        getter = self.lib.get_trajectory
+        getter = lib.get_trajectory
         getter.argtypes = [c_void_p, c_size_t]
         getter.restype = c_void_p
 
-        self.missiles = [Missile(missile=getter(self.handle, i), lib=lib) for i in range(n)]
+        self._missiles = [Missile(missile=getter(self._handle, i), lib=lib) for i in range(n)]
+
+        delete_missiles = lib.delete_missiles
+        delete_missiles.argtypes = [c_void_p, ]
+        delete_missiles.restype = None
+        self._delete_missiles = delete_missiles
 
     def __len__(self):
         return len(missiles)
 
     def __getitem__(self, i):
-        return self.missiles[i]
+        return self._missiles[i]
 
     def __del__(self):
-        f = self.lib.delete_missiles
-        f.argtypes = [c_void_p, ]
-        f.restype = None
-        f(self.handle)
+        self._delete_missiles(self._handle)
 
 
 if __name__ == '__main__':
-    lib = ctypes.cdll.LoadLibrary(Path('libphysics.so').resolve())
+    lib = str(Path('libphysics.so').resolve())
+    lib = ctypes.cdll.LoadLibrary(lib)
     missiles = Missiles(n=3, lib=lib)
 
     m = missiles[0]
