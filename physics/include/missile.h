@@ -1,5 +1,5 @@
-#ifndef MISSILE_H
-#define MISSILE_H
+#ifndef PHYSICS_MISSILE_H
+#define PHYSICS_MISSILE_H
 
 #include "config.h"
 #include <stdlib.h>
@@ -23,4 +23,4 @@ void launch_missile(Trajectory * const, double lat, double lon, double psi);
 
 size_t propagate_missile(struct Planets *, Trajectory *);
 
-#endif // MISSILE_H
+#endif // PHYSICS_MISSILE_H

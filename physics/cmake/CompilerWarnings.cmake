@@ -9,7 +9,6 @@ function(set_project_warnings project_name)
         -Wswitch-default
         -Wswitch-enum
         -Walloca
-        -Wfloat-equal
         -Wshadow
         -Wundef
         -Wunused-macros
@@ -46,6 +45,7 @@ function(set_project_warnings project_name)
         -Wzero-length-bounds
         -Wjump-misses-init
         -Wlogical-op
+        -Wno-unused-command-line-argument
     )
 
     if (WARNINGS_AS_ERRORS)

@@ -41,5 +41,7 @@ int main(int argc, char **argv) {
 
     delete_world(w);
 
-    return 0;
+    int is_debug = -1;
+    assert(is_debug++);
+    return is_debug;
 }

@@ -1,5 +1,5 @@
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef PHYSICS_WORLD_H
+#define PHYSICS_WORLD_H
 
 #include <stdlib.h>
 
@@ -16,4 +16,4 @@ int set_planet(struct Planets *, size_t i, double lat, double lon);
 
 size_t pop_planet(struct Planets *);
 
-#endif // WORLD_H
+#endif // PHYSICS_WORLD_H
