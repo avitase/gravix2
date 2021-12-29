@@ -29,15 +29,28 @@ endif ()
 
 add_subdirectory(src)
 
-set(N_POT "5" CACHE STRING "Approximation order of potential")
+set(POT_TYPE "2D" CACHE STRING "Type of potential")
+set(POT_TYPE_VALUES "2D" "3D")
+set_property(CACHE POT_TYPE PROPERTY STRINGS ${POT_TYPE_VALUES})
+list(FIND POT_TYPE_VALUES ${POT_TYPE} POT_TYPE_INDEX)
+if (${POT_TYPE_INDEX} EQUAL -1)
+    message(FATAL_ERROR "Unkown potential type '${POT_TYPE}'; supported entries are ${POT_TYPE_VALUES}")
+else ()
+    message(STATUS "Using potential type: ${POT_TYPE}")
+endif ()
+
+if ("${POT_TYPE}" STREQUAL "3D")
+    set(N_POT "5" CACHE STRING "Approximation order of potential")
+endif()
 
 set(TRAJECTORY_SIZE "5" CACHE STRING "Size of trajectory")
+
+set(MAX_LATITUDE 80 CACHE STRING "Max. allowed internal latitude in degree")
 
 set(COMPOSITION_SCHEME "p8s15" CACHE STRING "Composition method of integrator")
 set(COMPOSITION_SCHEME_VALUES "p2s1" "p4s5" "p6s9" "p8s15")
 set_property(CACHE COMPOSITION_SCHEME PROPERTY STRINGS ${COMPOSITION_SCHEME_VALUES})
 list(FIND COMPOSITION_SCHEME_VALUES ${COMPOSITION_SCHEME} COMPOSITION_SCHEME_INDEX)
-
 if (${COMPOSITION_SCHEME_INDEX} EQUAL -1)
     message(FATAL_ERROR "Unkown composition method '${COMPOSITION_SCHEME}'; supported entries are ${COMPOSITION_SCHEME_VALUES}")
 else ()
