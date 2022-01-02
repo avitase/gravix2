@@ -2,9 +2,37 @@
     H(\vec{q}, \vec{p}) = \frac{p^2}{2m} + V(\vec{q}) + \lambda g(\vec{q})
 \f]
 
+\f{align*}{
+    g(\vec{q}) &= \frac{1}{2} \left( q^2 - 1 \right) = 0 \\
+    \vec\nabla g(\vec{q}) &= \vec{q}
+\f}
+
+\f{align*}{
+    V_{2\mathrm{D}}(\sigma) &= -2 \sum\limits_{j=0}^\infty \big[ \ln(2\pi j + \sigma) + \ln(2\pi (j+1) - \sigma) \big] \\
+    V_{3\mathrm{D}}(\sigma) &= -\frac{1}{4\pi} \sum\limits_{j=0}^\infty \left[ \frac{1}{2\pi j + \sigma} + \frac{1}{2\pi (j+1) - \sigma} \right]
+\f}
+
+\f{align*}{
+    V'_{2\mathrm{D}}(\sigma) &= -\sum\limits_{i=1}^n \operatorname{cot} \frac{\sigma}{2} \\
+    V'_{3\mathrm{D}}(\sigma) &= -\sum\limits_{i=1}^n (\sigma - \pi) \sum\limits_{j=0}^\infty \frac{2j + 1}{\left[ (2j+1)^2 \pi^2 - (\sigma - \pi)^2 \right]^2}
+\f}
+
 \f[
-    g(\vec{q}) = q^2 - 1 = 0
+    V(\vec{q}) = \sum\limits_{i=1}^n V_d(\sigma_i)
 \f]
+with
+\f[
+    \sigma_i = \arccos(\vec{q} \cdot \vec{y}_i)
+\f]
+
+\f[
+    \vec\nabla_{\!q} V(\vec{q}) = \sum\limits_{i=1}^n \frac{V'_d(\sigma_i)}{\sin \sigma_i} \, \vec{y}_i
+\f]
+
+\f{align*}{
+    \frac{V'_{2\mathrm{D}}(\sigma_i)}{\sin \sigma_i} &= -\sum\limits_{i=1}^n \frac{1}{1 - \vec{q} \cdot \vec{y}_i} \\
+    \frac{V'_{3\mathrm{D}}(\sigma_i)}{\sin \sigma_i} &= \sum\limits_{i=1}^n \frac{\pi - \sigma_i}{\sqrt{1 - (\vec{q} \cdot \vec{y}_i)^2}} \sum\limits_{j=0}^\infty \frac{2j + 1}{\left[ (2j+1)^2 \pi^2 - (\sigma_i - \pi)^2 \right]^2}
+\f}
 
 \f{align*}{
     H^{[1]} &= \frac{p^2}{2m} + \lambda g(\vec{q}) \\
