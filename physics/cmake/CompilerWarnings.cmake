@@ -25,7 +25,6 @@ function(set_project_warnings project_name)
         -Wmissing-prototypes
         -Wmissing-declarations
         -Wpacked
-        -Wpadded
         -Wredundant-decls
         -Wnested-externs
         -Winline

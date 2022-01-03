@@ -1,42 +1,72 @@
 #include "missile.h"
-#include "world.h"
+#include "config.h"
+#include "integrators.h"
+#include <math.h>
 #include <stdlib.h>
 
-Missiles *new_missiles(size_t n) {
-    return malloc(sizeof(Trajectory) * n);
+struct Trajectory {
+    double x[TRAJECTORY_SIZE][3];
+    double v[TRAJECTORY_SIZE][3];
+};
+
+struct Trajectory *new_missiles(unsigned n) {
+    return malloc(sizeof(struct Trajectory) * n);
 }
 
-void delete_missiles(Missiles *m) {
+void delete_missiles(struct Trajectory *m) {
     free(m);
 }
 
-Trajectory *get_trajectory(Missiles *m, size_t i) {
+struct Trajectory *get_trajectory(struct Trajectory *m, unsigned i) {
     return m + i;
 }
 
-void launch_missile(Trajectory *const t, double lat, double lon, double psi) {
-    const size_t i = TRAJECTORY_SIZE - 1;
-    t->x[i][0] = 1.;
-    t->x[i][1] = 2.;
-    t->x[i][2] = 3.;
-    t->v[i][0] = 4.;
-    t->v[i][1] = 5.;
-    t->v[i][2] = 6.;
+void launch_missile(
+    struct Trajectory *t, double lat, double lon, double vlat, double vlon) {
+    const double sin_lat = sin(lat);
+    const double cos_lat = cos(lat);
+    const double sin_lon = sin(lon);
+    const double cos_lon = cos(lon);
+
+    const unsigned i = TRAJECTORY_SIZE - 1;
+    t->x[i][0] = cos_lat * sin_lon;
+    t->x[i][1] = cos_lat * cos_lon;
+    t->x[i][2] = sin_lat;
+    t->v[i][0] = -vlat * sin_lat * sin_lon + vlon * cos_lat * cos_lon;
+    t->v[i][1] = -vlat * sin_lat * cos_lon - vlon * cos_lat * sin_lon;
+    t->v[i][2] = vlat * cos_lat;
 }
 
-size_t propagate_missile(struct Planets *p, Trajectory *t) {
-    const size_t n = TRAJECTORY_SIZE;
-
-    for (size_t i = 0; i < 3; i++) {
-        t->x[0][i] = t->x[n - 1][i];
-        t->v[0][i] = t->v[n - 1][i];
+unsigned propagate_missile(struct Trajectory *t,
+                           const struct Planets *p,
+                           double h,
+                           int *premature) {
+    for (unsigned i = 0; i < 3; i++) {
+        t->x[0][i] = t->x[TRAJECTORY_SIZE - 1][i];
+        t->v[0][i] = t->v[TRAJECTORY_SIZE - 1][i];
     }
 
-    for (size_t i = 1; i < n; i++) {
-        for (size_t j = 0; j < 3; j++) {
-            t->x[i][j] = t->x[0][j] + 2. * (double)i;
-            t->v[i][j] = t->v[0][j] - 3. * (double)i;
-        }
+    struct QP qp = {
+        .q.x = t->x[0][0],
+        .q.y = t->x[0][1],
+        .q.z = t->x[0][2],
+        .p.x = t->v[0][0],
+        .p.y = t->v[0][1],
+        .p.z = t->v[0][2],
+    };
+
+    unsigned i = 0;
+    for (*premature = 0; i < TRAJECTORY_SIZE && !*premature; i++) {
+        unsigned int_steps = integration_loop(&qp, h, INT_STEPS, p);
+        *premature = (int_steps != INT_STEPS);
+
+        t->x[i][0] = qp.q.x;
+        t->x[i][1] = qp.q.y;
+        t->x[i][2] = qp.q.z;
+        t->v[i][0] = qp.p.x;
+        t->v[i][1] = qp.p.y;
+        t->v[i][2] = qp.p.z;
     }
-    return n;
+
+    return i;
 }

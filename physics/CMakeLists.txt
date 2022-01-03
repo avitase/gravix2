@@ -40,12 +40,12 @@ else ()
 endif ()
 
 if ("${POT_TYPE}" STREQUAL "3D")
-    set(N_POT "5" CACHE STRING "Approximation order of potential")
+    set(N_POT "1" CACHE STRING "Approximation order of potential")
 endif()
 
 set(TRAJECTORY_SIZE "5" CACHE STRING "Size of trajectory")
-
-set(MAX_LATITUDE 80 CACHE STRING "Max. allowed internal latitude in degree")
+set(INT_STEPS "10" CACHE STRING "Number of integration steps between consecutive trajectory points")
+set(THRESHOLD "0.9" CACHE STRING "Max. allowed projection value of missile and planet vectors")
 
 set(COMPOSITION_SCHEME "p8s15" CACHE STRING "Composition method of integrator")
 set(COMPOSITION_SCHEME_VALUES "p2s1" "p4s5" "p6s9" "p8s15")

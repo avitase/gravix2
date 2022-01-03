@@ -1,14 +1,9 @@
 #ifndef PHYSICS_POT_H
 #define PHYSICS_POT_H
 
-#include "repr.h"
-#include <stdlib.h>
+struct Vec3D;
+struct Planets;
 
-double dV(struct SinCos lat,
-          double lon,
-          const struct SinCos lati[],
-          const double loni[],
-          size_t n,
-          struct Sph *out);
+double gradV(struct Vec3D *, const struct Planets *);
 
 #endif // PHYSICS_POT_H

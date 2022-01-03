@@ -1,26 +1,21 @@
 #ifndef PHYSICS_MISSILE_H
 #define PHYSICS_MISSILE_H
 
-#include "config.h"
-#include <stdlib.h>
-
 struct Planets;
+struct Trajectory;
 
-typedef struct {
-    double x[TRAJECTORY_SIZE][3];
-    double v[TRAJECTORY_SIZE][3];
-} Trajectory;
+struct Trajectory *new_missiles(unsigned n);
 
-typedef Trajectory Missiles;
+void delete_missiles(struct Trajectory *);
 
-Missiles *new_missiles(size_t n);
+struct Trajectory *get_trajectory(struct Trajectory *, unsigned i);
 
-void delete_missiles(Missiles *);
+void launch_missile(
+    struct Trajectory *, double lat, double lon, double vlat, double vlon);
 
-Trajectory *get_trajectory(Missiles *, size_t i);
-
-void launch_missile(Trajectory * const, double lat, double lon, double psi);
-
-size_t propagate_missile(struct Planets *, Trajectory *);
+unsigned propagate_missile(struct Trajectory *,
+                           const struct Planets *,
+                           double h,
+                           int *premature);
 
 #endif // PHYSICS_MISSILE_H

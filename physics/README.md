@@ -14,7 +14,7 @@
 
 \f{align*}{
     V'_{2\mathrm{D}}(\sigma) &= -\sum\limits_{i=1}^n \operatorname{cot} \frac{\sigma}{2} \\
-    V'_{3\mathrm{D}}(\sigma) &= -\sum\limits_{i=1}^n (\sigma - \pi) \sum\limits_{j=0}^\infty \frac{2j + 1}{\left[ (2j+1)^2 \pi^2 - (\sigma - \pi)^2 \right]^2}
+    V'_{3\mathrm{D}}(\sigma) &= -\sum\limits_{i=1}^n (\pi - \sigma) \sum\limits_{j=0}^\infty \frac{2j + 1}{\left[ (2j+1)^2 \pi^2 - (\pi - \sigma)^2 \right]^2}
 \f}
 
 \f[
@@ -26,13 +26,15 @@ with
 \f]
 
 \f[
-    \vec\nabla_{\!q} V(\vec{q}) = \sum\limits_{i=1}^n \frac{V'_d(\sigma_i)}{\sin \sigma_i} \, \vec{y}_i
+    \vec\nabla_{\!q} V(\vec{q}) = \sum\limits_{i=1}^n \frac{V'_d(\sigma_i)}{\sin \sigma_i} \, \vec{y}_i = \sum\limits_{i=1}^n \mathcal{V}_d(\sigma_i) \, \vec{y}_i
 \f]
 
 \f{align*}{
-    \frac{V'_{2\mathrm{D}}(\sigma_i)}{\sin \sigma_i} &= -\sum\limits_{i=1}^n \frac{1}{1 - \vec{q} \cdot \vec{y}_i} \\
-    \frac{V'_{3\mathrm{D}}(\sigma_i)}{\sin \sigma_i} &= \sum\limits_{i=1}^n \frac{\pi - \sigma_i}{\sqrt{1 - (\vec{q} \cdot \vec{y}_i)^2}} \sum\limits_{j=0}^\infty \frac{2j + 1}{\left[ (2j+1)^2 \pi^2 - (\sigma_i - \pi)^2 \right]^2}
+    \mathcal{V}_{2\mathrm{D}}(\sigma_i) &= -\frac{1}{1 - \cos \sigma_i} \\
+    \mathcal{V}_{3\mathrm{D}}(\sigma_i) &= -\frac{1}{\operatorname{sinc}(\sigma_i - \pi)} \sum\limits_{j=0}^\infty \frac{2j + 1}{\left[ (2j+1)^2 \pi^2 - (\sigma_i - \pi)^2 \right]^2}
 \f}
+
+note that although \f$V'_{2\mathrm{D}}(\sigma_i) / \sin \sigma_i \neq 0\f$ at \f$\sigma_i = \pi\f$, here \f$\vec{q} \parallel \vec\nabla_{\!q} V\f$
 
 \f{align*}{
     H^{[1]} &= \frac{p^2}{2m} + \lambda g(\vec{q}) \\
@@ -45,13 +47,13 @@ with
     \end{pmatrix}
     \overset{\phi_t^{[1]}}{\longleftarrow}
     \begin{pmatrix}
-        \frac{1}{p} \, \vec{p} \, \sin \omega t + \vec{q} \, \cos \omega t \\
-        -p \, \vec{q} \, \sin \omega t + \vec{p} \, \cos \omega t
+        \frac{1}{p} \, \vec{p} \, \sin p \tau + \vec{q} \, \cos p \tau \\
+        -p \, \vec{q} \, \sin p \tau + \vec{p} \, \cos p \tau 
     \end{pmatrix}
 \f]
 
 \f[
-    \omega = \frac{p}{m}
+    \tau = \frac{t}{m}
 \f]
 
 with approximation
@@ -65,8 +67,8 @@ with approximation
     \end{pmatrix}
     \overset{\phi_t^{[1]}}{\longleftarrow}
     \begin{pmatrix}
-        \vec{q} + \frac{t}{m} \, \sqrt{1 - \frac{(\omega t)^2}{4}} \, \vec{p} - \frac{(\omega t)^2}{2} \, \vec{q} \\
-        \vec{p} - m \omega^2 t \, \sqrt{1 - \frac{(\omega t)^2}{4}} \, \vec{q} - \frac{(\omega t)^2}{2} \, \vec{p}
+        \vec{q} + \tau \, \sqrt{1 - \frac{p^2 \tau^2}{4}} \, \vec{p} - \frac{p^2 \tau^2}{2} \, \vec{q} \\
+        \vec{p} - p^2 \tau \, \sqrt{1 - \frac{p^2 \tau^2}{4}} \, \vec{q} - \frac{p^2 \tau^2}{2} \, \vec{p}
     \end{pmatrix}
 \f]
 
@@ -77,8 +79,28 @@ with approximation
     \overset{\phi_t^{[2]}}{\longleftarrow}
     \begin{pmatrix}
         \vec{q} \\
-        (\vec{q} \cdot \vec\nabla_{\!q} V(\vec{q})) \, \vec{q} \, t - \vec\nabla_{\!q} V(\vec{q}) \, t
+        \vec{p} + \left[ (\vec{q} \cdot \vec\nabla_{\!q} V(\vec{q})) \, \vec{q} - \vec\nabla_{\!q} V(\vec{q}) \right] t
     \end{pmatrix}
 \f]
 
 Strang splitting \f$\phi_{t/2}^{[1]} \circ \phi_t^{[2]} \circ \phi_{t/2}^{[1]}\f$
+
+\f[
+    \vec{x} = \begin{pmatrix}
+        \cos \phi \sin \lambda \\
+        \cos \phi \cos \lambda \\
+        \sin \phi
+    \end{pmatrix}
+\f]
+\f[
+    \vec{v} = \dot\phi \begin{pmatrix}
+        -\sin \phi \sin \lambda \\
+        -\sin \phi \cos \lambda \\
+        \cos \phi
+    \end{pmatrix} + \dot\lambda \begin{pmatrix}
+        \cos \phi \cos \lambda \\
+        -\cos \phi \sin \lambda \\
+        0
+    \end{pmatrix}
+\f]
+\f$x^2=1\f$ and \f$v^2 = \dot\phi^2 + (\dot\lambda \, \cos \phi)^2\f$

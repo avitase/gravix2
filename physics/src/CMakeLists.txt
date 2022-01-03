@@ -1,9 +1,9 @@
 add_library(physics SHARED
     integrators.c
+    linalg.c
     missile.c
+    planet.c
     pot.c
-    rotation.c
-    world.c
 )
 target_include_directories(physics BEFORE PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
