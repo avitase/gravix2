@@ -1,5 +1,5 @@
 import ctypes
-from ctypes import c_double, c_size_t, c_void_p
+from ctypes import c_double, c_int, c_uint, c_void_p, POINTER
 
 import numpy as np
 
@@ -10,17 +10,19 @@ class Missile:
         self.trajectory = None
 
         launch = lib.launch_missile
-        launch.argtypes = [c_void_p, c_double, c_double, c_double]
+        launch.argtypes = [c_void_p, c_double, c_double, c_double, c_double]
         launch.restype = None
         self._launch = launch
 
         propagate = lib.propagate_missile
-        propagate.argtypes = [c_void_p, c_void_p, ]
-        propagate.restype = c_size_t
+        propagate.argtypes = [c_void_p, c_void_p, c_double, POINTER(c_int)]
+        propagate.restype = c_uint
         self._propagate = propagate
 
-    def propagate(self):
-        n = self._propagate(None, self._missile)
+    def propagate(self, planets, h):
+        premature = c_int()
+        n = self._propagate(self._missile, planets.handle, float(h), ctypes.byref(premature))
+        premature = (premature.value == 1)
 
         class Trajectory(ctypes.Structure):
             _fields_ = [
@@ -28,26 +30,31 @@ class Missile:
                 ('v', c_double * (n * 3)),
             ]
 
-        raw = ctypes.cast(self._missile, ctypes.POINTER(Trajectory))
+        raw = ctypes.cast(self._missile, POINTER(Trajectory))
         self.trajectory = {
             'x': np.ctypeslib.as_array(raw.contents.x).reshape(n, 3),
             'v': np.ctypeslib.as_array(raw.contents.v).reshape(n, 3),
         }
 
-    def launch(self, *, lat, lon, psi):
-        self._launch(self._missile, lat, lon, psi)
-        self.propagate()
+        return premature
+
+    def launch(self, *, pos, vel):
+        lat, lon = map(float, pos)
+        vlat, vlon = map(float, vel)
+        self._launch(self._missile, lat, lon, vlat, vlon)
 
 
 class Missiles:
-    def __init__(self, *, n, lib):
+    def __init__(self, n, *, lib):
+        n = int(n)
+
         new_missiles = lib.new_missiles
-        new_missiles.argtypes = [c_size_t, ]
+        new_missiles.argtypes = [c_uint, ]
         new_missiles.restype = c_void_p
         self._handle = new_missiles(n)
 
         getter = lib.get_trajectory
-        getter.argtypes = [c_void_p, c_size_t]
+        getter.argtypes = [c_void_p, c_uint]
         getter.restype = c_void_p
 
         self._missiles = [Missile(missile=getter(self._handle, i), lib=lib) for i in range(n)]

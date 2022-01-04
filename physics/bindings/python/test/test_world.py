@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.physics.world import World
+from src.physics.planet import World
 
 
 def test_world(libphysics):

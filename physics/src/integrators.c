@@ -37,9 +37,11 @@ const double P2GAMMA_p8s15[] = {
     0.74167036435061295345,  // 1, 15
 };
 
-const double *const GAMMA = COMPOSITION_SCHEME;
-const unsigned N_STAGES =
+static const double *const GAMMA = COMPOSITION_SCHEME;
+static const unsigned N_STAGES =
     sizeof(COMPOSITION_SCHEME) / sizeof(*COMPOSITION_SCHEME);
+
+static const double THRESHOLD = MIN_DIST / 180. * M_PI;
 
 static void strang1(struct QP *qp, double h) {
     const double p = sqrt(dot(qp->p, qp->p));
@@ -91,8 +93,9 @@ unsigned integration_loop(struct QP *qp,
                           unsigned n,
                           const struct Planets *planets) {
     double mdist = -1.;
+    const double threshold = cos(THRESHOLD);
 
-    while (n-- > 0 && mdist < THRESHOLD) {
+    for (; n > 0 && mdist < threshold; n--) {
         mdist = integration_step(qp, h, planets);
     }
 

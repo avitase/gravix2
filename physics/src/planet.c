@@ -16,6 +16,10 @@ void delete_planets(struct Planets *p) {
 
 int set_planet(struct Planets *p, unsigned i, double lat, double lon) {
     if (i < p->n) {
+        const double DEG2RAD = M_PI / 180.;
+        lat *= DEG2RAD;
+        lon *= DEG2RAD;
+
         const double sin_lat = sin(lat);
         const double cos_lat = cos(lat);
         const double sin_lon = sin(lon);

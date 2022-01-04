@@ -23,6 +23,12 @@ struct Trajectory *get_trajectory(struct Trajectory *m, unsigned i) {
 
 void launch_missile(
     struct Trajectory *t, double lat, double lon, double vlat, double vlon) {
+    const double DEG2RAD = M_PI / 180.;
+    lat *= DEG2RAD;
+    lon *= DEG2RAD;
+    vlat *= DEG2RAD;
+    vlon *= DEG2RAD;
+
     const double sin_lat = sin(lat);
     const double cos_lat = cos(lat);
     const double sin_lon = sin(lon);
@@ -57,8 +63,8 @@ unsigned propagate_missile(struct Trajectory *t,
 
     unsigned i = 0;
     for (*premature = 0; i < TRAJECTORY_SIZE && !*premature; i++) {
-        unsigned int_steps = integration_loop(&qp, h, INT_STEPS, p);
-        *premature = (int_steps != INT_STEPS);
+        unsigned n_left = integration_loop(&qp, h, INT_STEPS, p);
+        *premature = (n_left != 0);
 
         t->x[i][0] = qp.q.x;
         t->x[i][1] = qp.q.y;
