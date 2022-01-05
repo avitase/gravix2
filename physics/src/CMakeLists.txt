@@ -1,4 +1,5 @@
 add_library(physics SHARED
+    helpers.c
     integrators.c
     linalg.c
     missile.c

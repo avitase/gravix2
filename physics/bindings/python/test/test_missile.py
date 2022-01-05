@@ -9,14 +9,14 @@ def test_missiles(libphysics):
     assert len(mm) == 3
 
     for m in mm:
-        m.launch(lat=0., lon=0., psi=0.)
+        m.launch(lat=0.0, lon=0.0, psi=0.0)
 
         trj = m.trajectory
-        assert 'x' in trj
-        assert 'v' in trj
-        assert trj['x'].shape == trj['v'].shape
+        assert "x" in trj
+        assert "v" in trj
+        assert trj["x"].shape == trj["v"].shape
 
         m.propagate()
-        assert 'x' in trj
-        assert 'v' in trj
-        assert trj['x'].shape == trj['v'].shape
+        assert "x" in trj
+        assert "v" in trj
+        assert trj["x"].shape == trj["v"].shape

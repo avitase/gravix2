@@ -87,20 +87,99 @@ Strang splitting \f$\phi_{t/2}^{[1]} \circ \phi_t^{[2]} \circ \phi_{t/2}^{[1]}\f
 
 \f[
     \vec{x} = \begin{pmatrix}
-        \cos \phi \sin \lambda \\
-        \cos \phi \cos \lambda \\
-        \sin \phi
+        \cos\phi \, \sin\lambda \\
+        \cos\phi \, \cos\lambda \\
+        \sin\phi
     \end{pmatrix}
 \f]
 \f[
-    \vec{v} = \dot\phi \begin{pmatrix}
-        -\sin \phi \sin \lambda \\
-        -\sin \phi \cos \lambda \\
-        \cos \phi
-    \end{pmatrix} + \dot\lambda \begin{pmatrix}
-        \cos \phi \cos \lambda \\
-        -\cos \phi \sin \lambda \\
+    \vec{v} = \begin{pmatrix}
+        v_1 \\ v_2 \\ v_3
+    \end{pmatrix} = \dot\phi \begin{pmatrix}
+        -\sin\phi \, \sin\lambda \\
+        -\sin\phi \, \cos\lambda \\
+        \cos\phi
+    \end{pmatrix} + \dot\lambda \, \cos \phi \begin{pmatrix}
+        \phantom{-}\cos\lambda \\
+        -\sin\lambda \\
         0
     \end{pmatrix}
 \f]
+
+\f[
+    \begin{pmatrix}
+        \dot\lambda \, \cos \phi \\
+        -\dot\phi \, \sin \phi
+    \end{pmatrix} = \begin{pmatrix}
+        \cos \lambda & -\sin \lambda \\
+        \sin \lambda & \cos \lambda
+    \end{pmatrix} \begin{pmatrix}
+        v_1 \\ v_2
+    \end{pmatrix}
+\f]
+if \f$|\sin \phi| \ll |\cos \phi|\f$
+\f[
+    \dot \phi = \frac{v_z}{\cos \phi}
+\f]
+
 \f$x^2=1\f$ and \f$v^2 = \dot\phi^2 + (\dot\lambda \, \cos \phi)^2\f$
+
+Rotating \f$\vec{\mathrm{e}}_z = (0, 0, 1)^\top\f$ to latitude \f$\phi\f$ and longitude \f$\lambda\f$
+\f[
+    \boldsymbol{R}_{\phi, \lambda} = \begin{pmatrix}
+        -\cos\lambda & -\sin\phi \, \sin\lambda & \cos\phi \, \sin\lambda \\
+        \phantom{-}\sin\lambda & -\sin\phi \, \cos\lambda & \cos\phi \, \cos\lambda \\
+        0 & \cos\phi & \sin\phi
+    \end{pmatrix}
+\f]
+
+Velocity vector with distance \f$r\f$ to \f$(\phi, \lambda)\f$
+\f[
+    \vec v = v \, \boldsymbol{R}_{\phi, \lambda} \begin{pmatrix}
+        \cos r \, \sin \psi \\
+        \cos r \, \cos \psi \\
+        -\sin r
+    \end{pmatrix}
+\f]
+(using \f$\sin(\pi/2 - r) = \cos(r)\f$ and \f$\cos(\pi - r) = \sin(r)\f$)
+
+starting from
+\f[
+    \vec x = \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \boldsymbol{R}_{\phi, \lambda} \begin{pmatrix}
+        \sin r \, \sin \psi \\
+        \sin r \, \cos \psi \\
+        \cos r
+    \end{pmatrix}
+\f]
+
+\f{align*}{
+    \phi' &= \arcsin x_3 \\
+    \lambda' &= \operatorname{atan2}(x_1, x_2)
+\f}
+
+\f[
+    \vec{v} = \dot\phi \begin{pmatrix}
+        -\sin\phi' \, \sin\lambda' \\
+        -\sin\phi' \, \cos\lambda' \\
+        \cos\phi'
+    \end{pmatrix} + \dot\lambda \, \cos\phi' \begin{pmatrix}
+        \phantom{-}\cos\lambda' \\
+        -\sin\lambda' \\
+        0
+    \end{pmatrix}
+\f]
+
+\f[
+    \dot\phi = \vec v \cdot \begin{pmatrix}
+        -\sin\phi' \, \sin\lambda' \\
+        -\sin\phi' \, \cos\lambda' \\
+        \cos\phi'
+    \end{pmatrix}
+\f]
+\f[
+    \dot\lambda \, \cos\phi' = \vec v \cdot \begin{pmatrix}
+        \phantom{-}\cos\lambda' \\
+        -\sin\lambda' \\
+        0
+    \end{pmatrix}
+\f]

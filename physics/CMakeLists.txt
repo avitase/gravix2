@@ -45,7 +45,7 @@ endif()
 
 set(TRAJECTORY_SIZE "5" CACHE STRING "Size of trajectory")
 set(INT_STEPS "10" CACHE STRING "Number of integration steps between consecutive trajectory points")
-set(MIN_DIST "5" CACHE STRING "Min. allowed distance between missiles and planets in degree")
+set(MIN_DIST "1" CACHE STRING "Min. allowed distance between missiles and planets in degree")
 
 set(COMPOSITION_SCHEME "p8s15" CACHE STRING "Composition method of integrator")
 set(COMPOSITION_SCHEME_VALUES "p2s1" "p4s5" "p6s9" "p8s15")
