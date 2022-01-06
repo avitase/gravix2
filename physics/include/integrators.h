@@ -11,11 +11,11 @@
 struct Planets;
 
 /*!
- * Phase space representation of state.
+ * \brief Phase space representation of state.
  */
 struct QP {
-    struct Vec3D q; /*!< vector of canonical coordinates. */
-    struct Vec3D p; /*! < vector of conjugate momenta. */
+    struct Vec3D q; /*!< Vector of canonical coordinates. */
+    struct Vec3D p; /*!< Vector of conjugate momenta. */
 };
 
 /*!
