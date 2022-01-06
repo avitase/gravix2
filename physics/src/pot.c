@@ -42,7 +42,7 @@ double gradV(struct Vec3D *x, const struct Planets *planets) {
 #if POT_TYPE == POT_TYPE_2D
         const double s = -1. / (1. - d);
 #elif POT_TYPE == POT_TYPE_3D
-        const double s = v3D_approx(arccos(d) - M_PI);
+        const double s = v3D_approx(acos(d) - M_PI);
 #endif
 
         acc.x += s * planet.x;

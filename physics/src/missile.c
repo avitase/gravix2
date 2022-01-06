@@ -1,5 +1,4 @@
 #include "api.h"
-#include "config.h"
 #include "integrators.h"
 #include "planet.h"
 #include <math.h>
@@ -7,21 +6,16 @@
 
 static const double THRESHOLD = MIN_DIST / 180. * M_PI;
 
-struct Trajectory {
-    double x[TRAJECTORY_SIZE][3];
-    double v[TRAJECTORY_SIZE][3];
-};
-
-struct Trajectory *new_missiles(unsigned n) {
+TrajectoryBatch new_missiles(unsigned n) {
     return malloc(sizeof(struct Trajectory) * n);
 }
 
-void delete_missiles(struct Trajectory *m) {
-    free(m);
+void delete_missiles(TrajectoryBatch batch) {
+    free(batch);
 }
 
-struct Trajectory *get_trajectory(struct Trajectory *m, unsigned i) {
-    return m + i;
+struct Trajectory *get_trajectory(TrajectoryBatch batch, unsigned i) {
+    return batch + i;
 }
 
 int init_missile(
@@ -76,7 +70,7 @@ static void rotation_matrix(double lat, double lon, struct Vec3D rot[3]) {
 }
 
 int launch_missile(struct Trajectory *t,
-                   const struct Planets *planets,
+                   const PlanetsHandle planets,
                    unsigned planet,
                    double v,
                    double psi) {
@@ -146,7 +140,7 @@ int launch_missile(struct Trajectory *t,
 }
 
 unsigned propagate_missile(struct Trajectory *t,
-                           const struct Planets *p,
+                           const PlanetsHandle p,
                            double h,
                            int *premature) {
     for (unsigned i = 0; i < 3; i++) {

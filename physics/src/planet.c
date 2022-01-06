@@ -3,19 +3,19 @@
 #include <math.h>
 #include <stdlib.h>
 
-struct Planets *new_planets(unsigned n) {
+PlanetsHandle new_planets(unsigned n) {
     struct Planets *ptr = malloc(sizeof(struct Planets));
     ptr->data = malloc(sizeof(double) * 3 * n);
     ptr->n = n;
     return ptr;
 }
 
-void delete_planets(struct Planets *p) {
+void delete_planets(PlanetsHandle p) {
     free(p->data);
     free(p);
 }
 
-int set_planet(struct Planets *p, unsigned i, double lat, double lon) {
+int set_planet(PlanetsHandle p, unsigned i, double lat, double lon) {
     if (i < p->n) {
         const double DEG2RAD = M_PI / 180.;
         lat *= DEG2RAD;
@@ -36,7 +36,7 @@ int set_planet(struct Planets *p, unsigned i, double lat, double lon) {
     return -1;
 }
 
-unsigned pop_planet(struct Planets *p) {
+unsigned pop_planet(PlanetsHandle p) {
     if (p->n > 0) {
         p->n = p->n - 1;
     }

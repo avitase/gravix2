@@ -2,6 +2,7 @@
 #include "linalg.h"
 #include <math.h>
 
+static const double DEG2RAD = M_PI / 180.;
 static const double RAD2DEG = 180. / M_PI;
 
 double lat(double z) {
@@ -13,6 +14,9 @@ double lon(double x, double y) {
 }
 
 double v_lat(double vx, double vy, double vz, double lat, double lon) {
+    lat *= DEG2RAD;
+    lon *= DEG2RAD;
+
     const double sin_lat = sin(lat);
     const double cos_lat = cos(lat);
     const double sin_lon = sin(lon);
@@ -24,7 +28,9 @@ double v_lat(double vx, double vy, double vz, double lat, double lon) {
     return dot(v, e_lat) * RAD2DEG;
 }
 
-double v_lon(double vx, double vy, double vz, double lat, double lon) {
+double v_lon(double vx, double vy, double vz, double lon) {
+    lon *= DEG2RAD;
+
     const double sin_lon = sin(lon);
     const double cos_lon = cos(lon);
 

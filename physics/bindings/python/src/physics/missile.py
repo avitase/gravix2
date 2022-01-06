@@ -34,7 +34,7 @@ class Missile:
 
         if len(pos) != len(vel) or len(pos) not in [2, 3]:
             raise ValueError(
-                "Position and velocity have either to be given as latitude and longitude or in the cartesian representation"
+                "Position and velocity have either to be given as a pair of latitude and longitude or in the cartesian representation"
             )
 
         if len(pos) == 3:
@@ -43,7 +43,7 @@ class Missile:
             lat = self._helper.get_lat(z)
             lon = self._helper.get_lon(x, y)
             vlat = self._helper.get_vlat(vx, vy, vz, lat, lon)
-            vlon = self._helper.get_vlon(vx, vy, vz, lat, lon)
+            vlon = self._helper.get_vlon(vx, vy, vz, lon)
         else:
             lat, lon = pos
             vlat, vlon = vel

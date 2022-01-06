@@ -9,10 +9,17 @@ function(enable_doxygen)
         set(DOXYGEN_USE_MATHJAX YES)
         set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
         find_package(Doxygen REQUIRED dot)
+
+        set(DOC_FILES
+            ${PROJECT_SOURCE_DIR}/README.md
+            ${PROJECT_SOURCE_DIR}/include
+            ${PROJECT_SOURCE_DIR}/src
+        )
+
         if (CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
-            doxygen_add_docs(doc ALL ${PROJECT_SOURCE_DIR})
+            doxygen_add_docs(doc ALL ${DOC_FILES})
         else ()
-            doxygen_add_docs(doc ${PROJECT_SOURCE_DIR})
+            doxygen_add_docs(doc ${DOC_FILES})
         endif ()
     endif ()
 endfunction()

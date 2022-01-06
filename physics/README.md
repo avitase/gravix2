@@ -106,6 +106,8 @@ Strang splitting \f$\phi_{t/2}^{[1]} \circ \phi_t^{[2]} \circ \phi_{t/2}^{[1]}\f
     \end{pmatrix}
 \f]
 
+Note that we refer in source to \f$\dot\phi\f$ and \f$(\dot\lambda \, \cos \phi)\f$ as `vlat` and `vlon`, respectively.
+
 \f[
     \begin{pmatrix}
         \dot\lambda \, \cos \phi \\
