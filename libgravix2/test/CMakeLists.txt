@@ -11,6 +11,12 @@ add_test(planet_tests planet_tests)
 
 add_executable(integrators_tests
     integrators_tests.c
+    ${PROJECT_SOURCE_DIR}/src/helpers.c
+    ${PROJECT_SOURCE_DIR}/src/integrators.c
+    ${PROJECT_SOURCE_DIR}/src/linalg.c
+    ${PROJECT_SOURCE_DIR}/src/missile.c
+    ${PROJECT_SOURCE_DIR}/src/planet.c
+    ${PROJECT_SOURCE_DIR}/src/pot.c
 )
 target_include_directories(integrators_tests BEFORE PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}

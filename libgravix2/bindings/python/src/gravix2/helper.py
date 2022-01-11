@@ -1,8 +1,9 @@
+import ctypes
 from ctypes import c_double
 
 
 class Helper:
-    def __init__(self, *, lib):
+    def __init__(self, *, lib: ctypes.CDLL) -> None:
         get_lat = lib.lat
         get_lat.argtypes = [c_double]
         get_lat.restype = c_double

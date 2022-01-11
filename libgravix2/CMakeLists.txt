@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 
-project(physics C)
+project(libgravix2 C)
 
 include(cmake/StandardProjectSettings.cmake)
 include(cmake/PreventInSourceBuilds.cmake)

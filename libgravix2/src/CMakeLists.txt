@@ -1,4 +1,4 @@
-add_library(physics SHARED
+add_library(gravix2 SHARED
     helpers.c
     integrators.c
     linalg.c
@@ -6,8 +6,8 @@ add_library(physics SHARED
     planet.c
     pot.c
 )
-target_include_directories(physics BEFORE PUBLIC
+target_include_directories(gravix2 BEFORE PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
     ${PROJECT_SOURCE_DIR}/include
 )
-target_link_libraries(physics PRIVATE project_warnings project_options m)
+target_link_libraries(gravix2 PRIVATE project_warnings project_options m)

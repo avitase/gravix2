@@ -1,5 +1,6 @@
 #include "integrators.h"
 #include "config.h"
+#include "helpers.h"
 #include "pot.h"
 #include <math.h>
 
@@ -51,9 +52,10 @@ static void strang1(struct QP *qp, double h) {
     /*
      * TODO: test if approximation with square root is more efficient
      */
-    struct QP qp2 = {.q.x = qp->p.x * s / p + qp->q.x * c,
-                     .q.y = qp->p.y * s / p + qp->q.y * c,
-                     .q.z = qp->p.z * s / p + qp->q.z * c,
+    const double sinc_ph = sinc(p * h);
+    struct QP qp2 = {.q.x = qp->p.x * h * sinc_ph + qp->q.x * c,
+                     .q.y = qp->p.y * h * sinc_ph + qp->q.y * c,
+                     .q.z = qp->p.z * h * sinc_ph + qp->q.z * c,
                      .p.x = qp->p.x * c - qp->q.x * p * s,
                      .p.y = qp->p.y * c - qp->q.y * p * s,
                      .p.z = qp->p.z * c - qp->q.z * p * s};

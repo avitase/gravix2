@@ -5,8 +5,8 @@ import pytest
 
 
 @pytest.fixture
-def libphysics():
-    f = Path(__file__).parent.parent / "libs" / "libphysics.so"
+def libgravix2():
+    f = Path(__file__).parent.parent / "libs" / "libgravix2.so"
     assert f.is_file(), f
 
     return ctypes.cdll.LoadLibrary(str(f.resolve()))

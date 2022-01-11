@@ -1,3 +1,4 @@
+#include "helpers.h"
 #include "api.h"
 #include "linalg.h"
 #include <math.h>
@@ -41,4 +42,8 @@ double v_lon(double vx, double vy, double vz, double lon) {
      * WARNING: this is \f$\dot\lambda \, \cos\phi\f$
      */
     return dot(v, e_lon) * RAD2DEG;
+}
+
+double sinc(double x) {
+    return x != 0. ? x / sin(x) : 1.;
 }

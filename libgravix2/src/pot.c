@@ -4,14 +4,11 @@
 #include "planet.h"
 
 #if POT_TYPE == POT_TYPE_3D
+#include "helpers.h"
 #include <math.h>
 #endif
 
 #if POT_TYPE == POT_TYPE_3D
-static double one_over_sinc(double x) {
-    return x != 0. ? x / sin(x) : 1.;
-}
-
 static double v3D_approx(double x) {
     // TODO: use lookup table and cubic hermite spline
     double acc = 0.;
@@ -22,7 +19,7 @@ static double v3D_approx(double x) {
         acc += k / pow(M_PI * M_PI * k * k - x * x, 2);
     }
 
-    return -one_over_sinc(x) * acc;
+    return -acc / sinc(x);
 }
 #endif
 
